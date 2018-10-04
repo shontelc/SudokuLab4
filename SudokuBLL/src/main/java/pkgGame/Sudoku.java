@@ -3,7 +3,9 @@ package pkgGame;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import pkgEnum.ePuzzleViolation;
 import pkgHelper.LatinSquare;
+import pkgHelper.PuzzleViolation;
 
 /**
  * Sudoku - This class extends LatinSquare, adding methods, constructor to
@@ -283,6 +285,24 @@ public class Sudoku extends LatinSquare {
 		}
 		
 		return true;
+	}
+	
+	
+	@Override
+	protected boolean hasDuplicates() {
+	
+		
+		if (super.hasDuplicates())
+			return true;
+		
+		for (int k = 0; k < super.getLatinSquare().length; k++) {
+			if (hasDuplicates(getRegion(k)))
+				AddPuzzleViolation(new PuzzleViolation(ePuzzleViolation.DupRegion,k));
+		}
+		if (super.getPV().size() > 0)
+			return true;
+		else return false;
+		
 	}
 
 	/**
